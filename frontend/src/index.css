@@ -1,0 +1,6 @@
+/* Import custom neumorphism styles */
+@import './styles/neumorphism.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
