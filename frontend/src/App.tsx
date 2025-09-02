@@ -1,62 +1,49 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import PrivateRoute from './components/PrivateRoute';
-import Layout from './components/Layout';
-import Profile from './components/Profile';
-import Admissions from './pages/Admissions';
-import Fees from './pages/Fees';
-import Hostel from './pages/Hostel';
-import Academics from './pages/Academics';
-// Neumorphism components
-import LoginNeumorphism from './components/LoginNeumorphism';
-import DashboardNeumorphism from './components/DashboardNeumorphism';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/dashboards/AdminDashboard';
+import FacultyDashboard from './pages/dashboards/FacultyDashboard';
+import StudentDashboard from './pages/dashboards/StudentDashboard';
+import AdmissionsPage from './pages/Admissions';
+import AcademicsPage from './pages/Academics';
+import FeesPage from './pages/Fees';
+import HostelPage from './pages/Hostel';
 
-// Protected login route that redirects if already authenticated
-const LoginRoute = () => {
-  const { state } = useAuth();
-  return state.isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />;
+const PrivateRoute = () => {
+  const userRole = localStorage.getItem('userRole');
+  return userRole ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
 };
 
-// Main App Routes
-const AppRoutes = () => {
+const Dashboard = () => {
+  const userRole = localStorage.getItem('userRole');
+  switch (userRole) {
+    case 'admin':
+      return <AdminDashboard />;
+    case 'faculty':
+      return <FacultyDashboard />;
+    case 'student':
+      return <StudentDashboard />;
+    default:
+      return <Navigate to="/login" />;
+  }
+};
+
+const App = () => {
   return (
-    <Routes>
-      {/* Authentication Routes */}
-      <Route path="/login" element={<LoginRoute />} />
-      <Route path="/" element={<LoginRoute />} />
-      
-      {/* Protected Routes */}
-      <Route element={<PrivateRoute />}>
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/admissions" element={<Admissions />} />
-          <Route path="/fees" element={<Fees />} />
-          <Route path="/hostel" element={<Hostel />} />
-          <Route path="/academics" element={<Academics />} />
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="admissions" element={<AdmissionsPage />} />
+          <Route path="academics" element={<AcademicsPage />} />
+          <Route path="fees" element={<FeesPage />} />
+          <Route path="hostel" element={<HostelPage />} />
+          <Route index element={<Navigate to="/dashboard" />} />
         </Route>
-      </Route>
-      
-      {/* Neumorphism Routes (Alternative UI) */}
-      <Route path="/neu/login" element={<LoginNeumorphism />} />
-      <Route path="/neu/dashboard" element={<DashboardNeumorphism />} />
-      
-      {/* Catch all route */}
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
+      </Routes>
+    </Router>
   );
 };
-
-function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </AuthProvider>
-  );
-}
 
 export default App;

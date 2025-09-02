@@ -1,46 +1,86 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: ["class"],
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+    './index.html'
   ],
+  prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Neumorphism background colors
-        neu: {
-          light: '#f0f0f3',
-          base: '#e0e5ec',
-          dark: '#a3b1c6',
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
-        // Dark mode neumorphism
-        neuDark: {
-          light: '#3a3a3c',
-          base: '#2c2c2e',
-          dark: '#1c1c1e',
-        }
-      },
-      boxShadow: {
-        // Light neumorphism shadows
-        'neu-flat': '20px 20px 60px #bebebe, -20px -20px 60px #ffffff',
-        'neu-pressed': 'inset 20px 20px 60px #bebebe, inset -20px -20px 60px #ffffff',
-        'neu-button': '9px 9px 16px #a3b1c6, -9px -9px 16px #ffffff',
-        'neu-card': '20px 20px 40px #a3b1c6, -20px -20px 40px #ffffff',
-        'neu-input': 'inset 8px 8px 16px #a3b1c6, inset -8px -8px 16px #ffffff',
-        
-        // Dark neumorphism shadows
-        'neu-dark-flat': '20px 20px 60px #252527, -20px -20px 60px #414145',
-        'neu-dark-pressed': 'inset 20px 20px 60px #252527, inset -20px -20px 60px #414145',
-        'neu-dark-button': '9px 9px 16px #252527, -9px -9px 16px #414145',
-        'neu-dark-card': '20px 20px 40px #252527, -20px -20px 40px #414145',
-        'neu-dark-input': 'inset 8px 8px 16px #252527, inset -8px -8px 16px #414145',
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
       borderRadius: {
-        'neu': '50px',
-        'neu-sm': '20px',
-        'neu-lg': '80px',
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+        xl: "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 12px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      boxShadow: {
+        'soft': '8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff',
+        'soft-inset': 'inset 8px 8px 16px #d1d9e6, inset -8px -8px 16px #ffffff',
+        'soft-dark': '8px 8px 16px #1a1a1a, -8px -8px 16px #2e2e2e',
+        'soft-dark-inset': 'inset 8px 8px 16px #1a1a1a, inset -8px -8px 16px #2e2e2e',
       }
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }
